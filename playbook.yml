@@ -1,0 +1,41 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+
+    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+
+    - name: Install list of packages
+      apt: name={{item}} state=installed
+      with_items:
+           - python-dev 
+           - python-pip
+           - libffi-dev
+    - pip: name=virtualenv state=present
+
+    - name: Manually create virtualenv
+      command: virtualenv /home/vagrant/venv creates="/home/vagrant/venv"
+
+    - name: Install pip packages
+      pip: name={{item}} state=present  virtualenv=/home/vagrant/venv
+      with_items:
+           - ansible
+           - dopy
+
+    - template: 
+        src: templates/vimrc 
+        dest: /home/vagrant/.vimrc 
+        owner: vagrant 
+        group: vagrant 
+
+    - template: 
+        src: templates/bash_profile 
+        dest: /home/vagrant/.bash_profile
+        owner: vagrant 
+        group: vagrant 
