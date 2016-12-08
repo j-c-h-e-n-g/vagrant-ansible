@@ -17,9 +17,11 @@
            - python-dev 
            - python-pip
            - libffi-dev
+
     - pip: name=virtualenv state=present
 
     - name: Manually create virtualenv
+      become_user: vagrant
       command: virtualenv /home/vagrant/venv creates="/home/vagrant/venv"
 
     - name: Install pip packages
@@ -27,21 +29,16 @@
       with_items:
            - ansible
            - dopy
+           - awscli
+           - apache-libcloud
+           - azure-cli
 
     - template: 
-        src: "{{ github_private_key }}"
-        dest: /home/vagrant/.ssh/id_rsa-ansible 
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
         owner: vagrant 
         group: vagrant 
-
-    - template: 
-        src: templates/vimrc 
-        dest: /home/vagrant/.vimrc 
-        owner: vagrant 
-        group: vagrant 
-
-    - template: 
-        src: templates/bash_profile 
-        dest: /home/vagrant/.bash_profile
-        owner: vagrant 
-        group: vagrant 
+      with_items:
+        - { src: "{{ github_private_key }}", dest: '/home/vagrant/.ssh/id_rsa-ansible' }
+        - { src: 'templates/vimrc', dest: '/home/vagrant/.vimrc' }
+        - { src: 'templates/bash_profile', dest: '/home/vagrant/.bash_profile' }
