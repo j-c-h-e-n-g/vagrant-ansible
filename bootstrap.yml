@@ -12,13 +12,13 @@
     dme_skey: "{{ lookup('env','DME_SKEY') }}"
 
   tasks:
-    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+
+    - name: install packages via apt
       apt:
+        name: "{{item}}"
+        state: installed
         update_cache: yes
         cache_valid_time: 3600
-
-    - name: Install list of packages
-      apt: name={{item}} state=installed
       with_items:
            - python-dev 
            - python-pip
