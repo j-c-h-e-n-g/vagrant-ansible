@@ -20,21 +20,20 @@
         update_cache: yes
         cache_valid_time: 3600
       with_items:
-           - python-dev 
-           - python-pip
-           - libffi-dev
-
+        - python-dev 
+        - python-pip
+        - libffi-dev
 
     - name: Install pip packages
       pip: 
         name: "{{item}}"
         state: present  
       with_items:
-           - ansible
-           - dopy
-           - awscli
-           - apache-libcloud
-           - azure-cli
+        - ansible
+        - dopy
+        - awscli
+        - apache-libcloud
+        - azure-cli
 
     - template: 
         src: "{{ item.src }}"
