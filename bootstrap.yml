@@ -20,14 +20,14 @@
         update_cache: yes
         cache_valid_time: 3600
       with_items:
-        - python-dev 
+        - python-dev
         - python-pip
         - libffi-dev
 
     - name: Install pip packages
-      pip: 
+      pip:
         name: "{{item}}"
-        state: present  
+        state: present
       with_items:
         - ansible
         - dopy
@@ -35,11 +35,12 @@
         - apache-libcloud
         - azure-cli
 
-    - template: 
+    - name: install templates
+      template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
-        owner: vagrant 
-        group: vagrant 
+        owner: vagrant
+        group: vagrant
       with_items:
         - { src: "{{ github_private_key }}", dest: '/home/vagrant/.ssh/id_rsa-ansible' }
         - { src: 'templates/vimrc', dest: '/home/vagrant/.vimrc' }
