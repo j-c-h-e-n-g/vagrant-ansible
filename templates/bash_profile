@@ -3,4 +3,3 @@ export AWS_SECRET_ACCESS_KEY={{ aws_secret_access_key }}
 export DO_API_TOKEN={{ do_api_token }}
 export DME_AKEY={{ dme_akey }}
 export DME_SKEY={{ dme_skey }}
-source ~/venv/bin/activate
