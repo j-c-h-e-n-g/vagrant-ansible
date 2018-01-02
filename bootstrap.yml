@@ -3,7 +3,6 @@
   gather_facts: false
   become: true
   vars:
-    github_private_key: /Users/asdf/.ssh/id_rsa-ansible
 
     aws_access_key_id: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
     aws_secret_access_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
@@ -23,6 +22,9 @@
         - python-dev
         - python-pip
         - libffi-dev
+        - libssl-dev
+
+    - shell: pip install --upgrade setuptools
 
     - name: Install pip packages
       pip:
@@ -33,7 +35,7 @@
         - dopy
         - awscli
         - apache-libcloud
-        - azure-cli
+
 
     - name: install templates
       template:
@@ -42,6 +44,6 @@
         owner: vagrant
         group: vagrant
       with_items:
-        - { src: "{{ github_private_key }}", dest: '/home/vagrant/.ssh/id_rsa-ansible' }
+
         - { src: 'templates/vimrc', dest: '/home/vagrant/.vimrc' }
         - { src: 'templates/bash_profile', dest: '/home/vagrant/.bash_profile' }
